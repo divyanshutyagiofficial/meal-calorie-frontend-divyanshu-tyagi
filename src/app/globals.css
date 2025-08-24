@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -101,9 +101,9 @@
   --accent: #0f1b2d;
   --accent-foreground: #e6f0ff;
   --destructive: #ef4444;
-  --border: rgba(255,255,255,0.08);
-  --input: rgba(255,255,255,0.12);
-  --ring: rgba(56,189,248,0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: rgba(56, 189, 248, 0.6);
   /* Accents */
   --accent-pink: #fb7185; /* rose-400 for dark surfaces */
   --accent-amber: #fbbf24; /* amber-400 for dark surfaces */
@@ -120,8 +120,8 @@
   --sidebar-primary-foreground: #041019;
   --sidebar-accent: #0f1b2d;
   --sidebar-accent-foreground: #e6f0ff;
-  --sidebar-border: rgba(255,255,255,0.08);
-  --sidebar-ring: rgba(56,189,248,0.6);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: rgba(56, 189, 248, 0.6);
 }
 
 @layer base {

@@ -4,7 +4,13 @@ import { useRequireAuth } from '@/lib/auth'
 import { useAuthStore } from '@/stores/authStore'
 import { useMealStore } from '@/stores/mealStore'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useRouter } from 'next/navigation'
 import { LogOut, Plus, History, User, Utensils } from 'lucide-react'
@@ -36,7 +42,10 @@ const DashboardPage = () => {
   // Helper for stats calculation
   const getAvgCalories = () => {
     if (meals.mealHistory.length === 0) return 0
-    const total = meals.mealHistory.reduce((sum, meal) => sum + meal.total_calories, 0)
+    const total = meals.mealHistory.reduce(
+      (sum, meal) => sum + meal.total_calories,
+      0
+    )
     return Math.round(total / meals.mealHistory.length)
   }
 
@@ -50,7 +59,10 @@ const DashboardPage = () => {
               <User className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'var(--font-display)' }}>
+              <h1
+                className="text-2xl font-bold text-foreground"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
                 Welcome back, {auth.user?.firstName}!
               </h1>
               <p className="text-muted-foreground">{auth.user?.email}</p>
@@ -64,10 +76,19 @@ const DashboardPage = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5" onClick={() => router.push('/calories')}>
+          <Card
+            className="cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5"
+            onClick={() => router.push('/calories')}
+          >
             <CardHeader>
-              <CardTitle className="flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
-                <Plus className="h-5 w-5" style={{ color: 'var(--accent-amber)' }} />
+              <CardTitle
+                className="flex items-center gap-2"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                <Plus
+                  className="h-5 w-5"
+                  style={{ color: 'var(--accent-amber)' }}
+                />
                 Calculate Calories
               </CardTitle>
               <CardDescription>
@@ -84,8 +105,14 @@ const DashboardPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
-                <History className="h-5 w-5" style={{ color: 'var(--accent-pink)' }} />
+              <CardTitle
+                className="flex items-center gap-2"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                <History
+                  className="h-5 w-5"
+                  style={{ color: 'var(--accent-pink)' }}
+                />
                 Recent Searches
               </CardTitle>
               <CardDescription>
@@ -97,11 +124,16 @@ const DashboardPage = () => {
                 <p className="text-muted-foreground text-sm">No searches yet</p>
               ) : (
                 <div className="space-y-2">
-                  {meals.mealHistory.slice(0, 3).map((meal) => (
-                    <div key={meal.id} className="flex items-center justify-between p-2 bg-secondary rounded">
+                  {meals.mealHistory.slice(0, 3).map(meal => (
+                    <div
+                      key={meal.id}
+                      className="flex items-center justify-between p-2 bg-secondary rounded"
+                    >
                       <div>
                         <p className="font-medium text-sm">{meal.dish_name}</p>
-                        <p className="text-xs text-muted-foreground">{formatDate(meal.timestamp)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(meal.timestamp)}
+                        </p>
                       </div>
                       <Badge variant="secondary">
                         {meal.total_calories} cal
@@ -129,16 +161,24 @@ const DashboardPage = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-secondary p-4 rounded-lg">
-                  <p className="text-sm font-medium text-primary">Total Searches</p>
-                  <p className="text-2xl font-bold">{meals.mealHistory.length}</p>
+                  <p className="text-sm font-medium text-primary">
+                    Total Searches
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {meals.mealHistory.length}
+                  </p>
                 </div>
                 <div className="bg-secondary p-4 rounded-lg">
-                  <p className="text-sm font-medium text-primary">Avg Calories</p>
+                  <p className="text-sm font-medium text-primary">
+                    Avg Calories
+                  </p>
                   <p className="text-2xl font-bold">{getAvgCalories()}</p>
                 </div>
                 <div className="bg-secondary p-4 rounded-lg">
                   <p className="text-sm font-medium text-primary">Latest</p>
-                  <p className="text-2xl font-bold">{meals.mealHistory[0]?.total_calories || 0}</p>
+                  <p className="text-2xl font-bold">
+                    {meals.mealHistory[0]?.total_calories || 0}
+                  </p>
                   <p className="text-xs text-muted-foreground">cal</p>
                 </div>
               </div>

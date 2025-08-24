@@ -7,16 +7,25 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { caloriesAPI } from '@/lib/api'
 import { useMealStore } from '@/stores/mealStore'
-import { MealResult, MealFormData } from '@/types'
+import { MealResult, MealFormData, AxiosError } from '@/types'
 import { toast } from 'sonner'
 import { Search, Utensils } from 'lucide-react'
 
 const mealSchema = z.object({
   dish_name: z.string().min(2, 'Dish name too short'),
-  servings: z.number().min(0.1, 'Need at least 0.1 servings').max(50, 'Max 50 servings'),
+  servings: z
+    .number()
+    .min(0.1, 'Need at least 0.1 servings')
+    .max(50, 'Max 50 servings'),
 })
 
 const MealForm = () => {
@@ -32,7 +41,11 @@ const MealForm = () => {
     },
   })
 
-  const { register, handleSubmit: onSubmit, formState: { errors } } = form
+  const {
+    register,
+    handleSubmit: onSubmit,
+    formState: { errors },
+  } = form
 
   const handleSubmit = async (data: MealFormData) => {
     setLoading(true)
@@ -40,12 +53,12 @@ const MealForm = () => {
 
     try {
       console.log('Searching for:', data.dish_name, 'servings:', data.servings)
-      
+
       const res = await caloriesAPI.getCalories(data)
 
       // Create result
       const result = {
-        id: Date.now().toString(), 
+        id: Date.now().toString(),
         ...res.data,
         timestamp: new Date().toISOString(),
       } as MealResult
@@ -53,19 +66,19 @@ const MealForm = () => {
       setCurrentResult(result)
       addToHistory(result)
       toast.success('Got the calories!')
-      
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Calorie lookup failed:', err)
-      
+
       let msg = 'Could not find calorie info'
-      if (err.response?.data?.message) {
-        msg = err.response.data.message
-      } else if (err.response?.status === 404) {
+      const axiosError = err as AxiosError
+      if (axiosError.response?.data?.message) {
+        msg = axiosError.response.data.message
+      } else if (axiosError.response?.status === 404) {
         msg = 'Dish not found in database'
-      } else if (err.response?.status >= 500) {
+      } else if (axiosError.response?.status && axiosError.response.status >= 500) {
         msg = 'Server error - try again later'
       }
-      
+
       setError(msg)
       toast.error(msg)
     } finally {
@@ -85,14 +98,14 @@ const MealForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-                 <form onSubmit={onSubmit(handleSubmit)} className="space-y-4">
+        <form onSubmit={onSubmit(handleSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="dish_name">Dish Name</Label>
             <Input
               id="dish_name"
               {...register('dish_name')}
               placeholder="e.g., chicken biryani, pasta alfredo"
-                             disabled={loading}
+              disabled={loading}
             />
             {errors.dish_name && (
               <p className="text-sm text-red-600">{errors.dish_name.message}</p>
@@ -108,15 +121,15 @@ const MealForm = () => {
               min="0.1"
               max="50"
               {...register('servings', { valueAsNumber: true })}
-                             disabled={loading}
+              disabled={loading}
             />
             {errors.servings && (
               <p className="text-sm text-red-600">{errors.servings.message}</p>
             )}
           </div>
 
-                     <Button type="submit" className="w-full" disabled={loading}>
-             {loading ? (
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? (
               <>
                 <Search className="mr-2 h-4 w-4 animate-spin" />
                 Searching...
@@ -130,8 +143,8 @@ const MealForm = () => {
           </Button>
         </form>
       </CardContent>
-         </Card>
-   )
- }
+    </Card>
+  )
+}
 
 export { MealForm }

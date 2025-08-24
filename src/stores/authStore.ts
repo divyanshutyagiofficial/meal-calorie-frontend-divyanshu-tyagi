@@ -10,7 +10,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      
+
       login: (token: string, user: User) => {
         // console.log('User logging in:', user.email) // Debug - remove before prod
         set({
@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
         })
       },
-      
+
       logout: () => {
         const currentUser = get().user
         console.log(`Logging out user: ${currentUser?.email || 'unknown'}`)
@@ -29,13 +29,13 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
         })
       },
-      
+
       setUser: (user: User) => set({ user }),
     }),
     {
       name: 'auth-storage',
       // Only persist what we need
-      partialize: (state) => ({
+      partialize: state => ({
         token: state.token,
         user: state.user,
         isAuthenticated: state.isAuthenticated,

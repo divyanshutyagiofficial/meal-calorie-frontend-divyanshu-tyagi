@@ -7,10 +7,24 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 // Dialogs are reserved for confirmations; errors use toasts only
 import { authAPI } from '@/lib/api'
-import { RegisterRequest, LoginRequest, AuthFormProps, LoginFormData, RegisterFormData } from '@/types'
+import {
+  RegisterRequest,
+  LoginRequest,
+  AuthFormProps,
+  LoginFormData,
+  RegisterFormData,
+  FieldError,
+  AxiosError,
+} from '@/types'
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -41,7 +55,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
     resolver: zodResolver(schema),
   })
 
-  const { register, handleSubmit, formState: { errors } } = form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form
 
   const onSubmit = async (data: LoginFormData | RegisterFormData) => {
     setIsLoading(true)
@@ -58,17 +76,18 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
       toast.success(isLogin ? 'Welcome back!' : 'Account created!')
       router.push('/dashboard')
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Auth error:', err)
 
       // Handle different error formats from backend
       let errorMessage = 'Something went wrong'
-      if (err.response?.data?.message) {
-        errorMessage = err.response.data.message
-      } else if (err.response?.data?.error) {
-        errorMessage = err.response.data.error
-      } else if (err.message) {
-        errorMessage = err.message
+      const axiosError = err as AxiosError
+      if (axiosError.response?.data?.message) {
+        errorMessage = axiosError.response.data.message
+      } else if (axiosError.response?.data?.error) {
+        errorMessage = axiosError.response.data.error
+      } else if (axiosError.message) {
+        errorMessage = axiosError.message
       }
 
       // Only show toast for errors (no modal)
@@ -86,8 +105,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
           <CardDescription>
             {isLogin
               ? 'Enter your credentials to access your account'
-              : 'Fill in your information to create a new account'
-            }
+              : 'Fill in your information to create a new account'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -98,24 +116,32 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   <Label htmlFor="firstName">First Name</Label>
                   <Input
                     id="firstName"
-                    {...register('firstName' as keyof (LoginFormData | RegisterFormData))}
+                    {...register(
+                      'firstName' as keyof (LoginFormData | RegisterFormData)
+                    )}
                     placeholder="John"
                     disabled={isLoading}
                   />
                   {'firstName' in errors && errors.firstName && (
-                    <p className="text-sm text-red-600">{(errors as any).firstName.message}</p>
+                    <p className="text-sm text-red-600">
+                      {(errors as Record<string, FieldError>).firstName.message}
+                    </p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
                   <Input
                     id="lastName"
-                    {...register('lastName' as keyof (LoginFormData | RegisterFormData))}
+                    {...register(
+                      'lastName' as keyof (LoginFormData | RegisterFormData)
+                    )}
                     placeholder="Doe"
                     disabled={isLoading}
                   />
                   {'lastName' in errors && errors.lastName && (
-                    <p className="text-sm text-red-600">{(errors as any).lastName.message}</p>
+                    <p className="text-sm text-red-600">
+                      {(errors as Record<string, FieldError>).lastName.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -145,27 +171,43 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 disabled={isLoading}
               />
               {errors.password && (
-                <p className="text-sm text-red-600">{errors.password.message}</p>
+                <p className="text-sm text-red-600">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (isLogin ? 'Signing In...' : 'Creating Account...') : (isLogin ? 'Sign In' : 'Create Account')}
+              {isLoading
+                ? isLogin
+                  ? 'Signing In...'
+                  : 'Creating Account...'
+                : isLogin
+                  ? 'Sign In'
+                  : 'Create Account'}
             </Button>
           </form>
 
           <div className="mt-4 text-center text-sm">
             {isLogin ? (
               <>
-                Don't have an account?{' '}
-                <Button variant="link" className="p-0 h-auto" onClick={() => router.push('/register')}>
+                Don&apos;t have an account?{' '}
+                <Button
+                  variant="link"
+                  className="p-0 h-auto"
+                  onClick={() => router.push('/register')}
+                >
                   Sign up
                 </Button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <Button variant="link" className="p-0 h-auto" onClick={() => router.push('/login')}>
+                <Button
+                  variant="link"
+                  className="p-0 h-auto"
+                  onClick={() => router.push('/login')}
+                >
                   Sign in
                 </Button>
               </>

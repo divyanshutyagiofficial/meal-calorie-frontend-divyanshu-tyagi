@@ -1,6 +1,12 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useMealStore } from '@/stores/mealStore'
 import { Calendar, Info, Utensils, Zap } from 'lucide-react'
@@ -73,13 +79,16 @@ const ResultCard = () => {
             {currentResult.dish_name}
           </h3>
           <Badge variant="secondary">
-            {currentResult.servings} serving{currentResult.servings !== 1 ? 's' : ''}
+            {currentResult.servings} serving
+            {currentResult.servings !== 1 ? 's' : ''}
           </Badge>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="rounded-lg p-3 border bg-background/50">
-            <p className="text-sm text-muted-foreground font-medium">Per Serving</p>
+            <p className="text-sm text-muted-foreground font-medium">
+              Per Serving
+            </p>
             <p className="text-2xl font-bold">
               {currentResult.calories_per_serving}
             </p>
@@ -88,9 +97,7 @@ const ResultCard = () => {
 
           <div className="rounded-lg p-3 border bg-background/50">
             <p className="text-sm text-muted-foreground font-medium">Total</p>
-            <p className="text-2xl font-bold">
-              {currentResult.total_calories}
-            </p>
+            <p className="text-2xl font-bold">{currentResult.total_calories}</p>
             <p className="text-sm text-muted-foreground">calories</p>
           </div>
         </div>

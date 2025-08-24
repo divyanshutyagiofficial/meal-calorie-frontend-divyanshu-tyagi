@@ -1,36 +1,45 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "sonner";
-import { ThemeProvider } from "next-themes";
-import { ClientNavigation } from "@/components/ClientNavigation";
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google'
+import './globals.css'
+import { Toaster } from 'sonner'
+import { ThemeProvider } from 'next-themes'
+import { ClientNavigation } from '@/components/ClientNavigation'
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+  variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+})
 
 export const metadata: Metadata = {
   title: {
-    default: "Meal Calorie Counter | Track Your Food Nutrition",
-    template: "%s | Meal Calorie Counter"
+    default: 'Meal Calorie Counter | Track Your Food Nutrition',
+    template: '%s | Meal Calorie Counter',
   },
-  description: "Calculate calories and nutritional information for any dish using USDA FoodData Central API. Get accurate calorie counts, macronutrients, and meal planning insights.",
-  keywords: ["calorie calculator", "nutrition tracker", "food calories", "meal planning", "USDA database", "macronutrients", "diet tracking"],
-  authors: [{ name: "Meal Calorie Counter Team" }],
-  creator: "Meal Calorie Counter",
-  publisher: "Meal Calorie Counter",
+  description:
+    'Calculate calories and nutritional information for any dish using USDA FoodData Central API. Get accurate calorie counts, macronutrients, and meal planning insights.',
+  keywords: [
+    'calorie calculator',
+    'nutrition tracker',
+    'food calories',
+    'meal planning',
+    'USDA database',
+    'macronutrients',
+    'diet tracking',
+  ],
+  authors: [{ name: 'Meal Calorie Counter Team' }],
+  creator: 'Meal Calorie Counter',
+  publisher: 'Meal Calorie Counter',
   formatDetection: {
     email: false,
     address: false,
@@ -45,7 +54,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://your-domain.com',
     title: 'Meal Calorie Counter | Track Your Food Nutrition',
-    description: 'Calculate calories and nutritional information for any dish using our comprehensive USDA food database.',
+    description:
+      'Calculate calories and nutritional information for any dish using our comprehensive USDA food database.',
     siteName: 'Meal Calorie Counter',
     images: [
       {
@@ -59,7 +69,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Meal Calorie Counter | Track Your Food Nutrition',
-    description: 'Calculate calories and nutritional information for any dish using our comprehensive USDA food database.',
+    description:
+      'Calculate calories and nutritional information for any dish using our comprehensive USDA food database.',
     images: ['/images/twitter-image.jpg'],
   },
   robots: {
@@ -78,18 +89,18 @@ export const metadata: Metadata = {
     yandex: 'your-yandex-verification-code',
     yahoo: 'your-yahoo-verification-code',
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  
-  
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} antialiased`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -101,14 +112,17 @@ export default function RootLayout({
               <div className="app-container h-14 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded-xl bg-primary/20 border border-primary/30" />
-                  <span className="font-semibold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>CalorieIQ</span>
+                  <span
+                    className="font-semibold tracking-tight"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    CalorieIQ
+                  </span>
                 </div>
                 <ClientNavigation />
               </div>
             </header>
-            <main className="app-container py-8 md:py-12">
-              {children}
-            </main>
+            <main className="app-container py-8 md:py-12">{children}</main>
           </div>
           <Toaster
             position="top-center"
@@ -119,5 +133,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

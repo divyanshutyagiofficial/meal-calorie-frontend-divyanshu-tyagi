@@ -1,13 +1,14 @@
 import axios from 'axios'
-import { 
-  AuthResponse, 
-  LoginRequest, 
-  RegisterRequest, 
-  MealRequest, 
-  MealResponse 
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  MealRequest,
+  MealResponse,
 } from '@/types'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000'
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000'
 
 // Create axios instance
 export const api = axios.create({
@@ -20,7 +21,7 @@ export const api = axios.create({
 
 // Add auth token to requests
 api.interceptors.request.use(
-  (config) => {
+  config => {
     // Only run in browser
     if (typeof window !== 'undefined') {
       const authStorage = localStorage.getItem('auth-storage')
@@ -38,21 +39,24 @@ api.interceptors.request.use(
     }
     return config
   },
-  (error) => Promise.reject(error)
+  error => Promise.reject(error)
 )
 
 // Handle common response errors
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     console.error('API Error:', error.response?.status, error.response?.data)
-    
+
     // Handle auth failures
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth-storage')
         // Only redirect if not already on auth pages
-        if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
+        if (
+          !window.location.pathname.includes('/login') &&
+          !window.location.pathname.includes('/register')
+        ) {
           window.location.href = '/login'
         }
       }
@@ -65,13 +69,15 @@ api.interceptors.response.use(
 
 // Auth endpoints
 export const authAPI = {
-  register: (data: RegisterRequest) => api.post<AuthResponse>('/auth/register', data),
+  register: (data: RegisterRequest) =>
+    api.post<AuthResponse>('/auth/register', data),
   login: (data: LoginRequest) => api.post<AuthResponse>('/auth/login', data),
 }
 
 // Calorie endpoints
 export const caloriesAPI = {
-  getCalories: (data: MealRequest) => api.post<MealResponse>('/get-calories', data),
+  getCalories: (data: MealRequest) =>
+    api.post<MealResponse>('/get-calories', data),
 }
 
 // Helper function for quick API calls

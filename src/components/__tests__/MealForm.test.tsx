@@ -33,12 +33,14 @@ describe('MealForm', () => {
   it('should render form elements and validate inputs', async () => {
     // Test 1: Form rendering and basic validation
     render(<MealForm />)
-    
+
     // Check form elements exist
     expect(screen.getByLabelText(/dish name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/servings/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /get calories/i })).toBeInTheDocument()
-    
+    expect(
+      screen.getByRole('button', { name: /get calories/i })
+    ).toBeInTheDocument()
+
     // Test validation - empty form
     const submitButton = screen.getByRole('button', { name: /get calories/i })
     await user.click(submitButton)
@@ -46,18 +48,20 @@ describe('MealForm', () => {
     await waitFor(() => {
       expect(screen.getByText(/dish name too short/i)).toBeInTheDocument()
     })
-    
+
     // Test validation - minimum servings
     const dishInput = screen.getByLabelText(/dish name/i)
     const servingsInput = screen.getByLabelText(/servings/i)
-    
+
     await user.type(dishInput, 'apple')
     await user.clear(servingsInput)
     await user.type(servingsInput, '0')
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/need at least 0.1 servings/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/need at least 0.1 servings/i)
+      ).toBeInTheDocument()
     })
   })
 
@@ -75,29 +79,29 @@ describe('MealForm', () => {
             protein: 0.3,
             fat: 0.2,
             carbohydrates: 13.8,
-            fiber: 2.4
+            fiber: 2.4,
           },
           total: {
             protein: 0.6,
             fat: 0.4,
             carbohydrates: 27.6,
-            fiber: 4.8
-          }
-        }
+            fiber: 4.8,
+          },
+        },
       },
     }
 
     vi.mocked(api.caloriesAPI.getCalories).mockResolvedValue(mockResponse)
 
     render(<MealForm />)
-    
+
     const dishInput = screen.getByLabelText(/dish name/i)
     const servingsInput = screen.getByLabelText(/servings/i)
-    
+
     await user.type(dishInput, 'apple')
     await user.clear(servingsInput)
     await user.type(servingsInput, '2')
-    
+
     const submitButton = screen.getByRole('button', { name: /get calories/i })
     await user.click(submitButton)
 
@@ -117,7 +121,7 @@ describe('MealForm', () => {
         total_calories: 104,
       })
     )
-    
+
     expect(mockMealStore.addToHistory).toHaveBeenCalled()
   })
 })

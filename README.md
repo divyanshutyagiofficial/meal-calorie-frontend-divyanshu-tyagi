@@ -19,21 +19,22 @@ Next.js web app for calorie tracking using USDA API.
 - React Hook Form + Zod
 - Axios for API calls
 
-
-
 ## Setup
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
 
 2. Copy env file:
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Update with your backend URL:
+
    ```env
    NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
    ```
@@ -48,7 +49,7 @@ Open http://localhost:3000
 ## Scripts
 
 - `npm run dev` - Dev server
-- `npm run build` - Build for production  
+- `npm run build` - Build for production
 - `npm run start` - Start production
 - `npm run lint` - ESLint
 
@@ -67,7 +68,7 @@ Register/login, then search for dishes to get calorie info. Dashboard shows your
 ## API Endpoints
 
 - `POST /auth/register` - User registration
-- `POST /auth/login` - User login  
+- `POST /auth/login` - User login
 - `POST /get-calories` - Get calorie data
 
 ## Deployment
