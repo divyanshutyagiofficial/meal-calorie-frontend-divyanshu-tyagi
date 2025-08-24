@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Frontend Next.js Application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reloading during development
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+      - NEXT_PUBLIC_APP_NAME=Meal Calorie Counter
+      - NEXT_PUBLIC_APP_VERSION=1.0.0
+      - NEXT_PUBLIC_ENVIRONMENT=development
+    depends_on:
+      - backend
+    networks:
+      - meal-calorie-network
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  # Backend Node.js/Express Application
+  backend:
+    build:
+      context: ../meal-calorie-count-generator-main
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount source code for hot reloading during development
+      - ../meal-calorie-count-generator-main:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/meal-calorie-count-generator
+      - JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-random
+      - USDA_API_KEY=${USDA_API_KEY}
+    depends_on:
+      - mongo
+    networks:
+      - meal-calorie-network
+    restart: unless-stopped
+
+  # MongoDB Database
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - meal-calorie-network
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+
+networks:
+  meal-calorie-network:
+    driver: bridge
