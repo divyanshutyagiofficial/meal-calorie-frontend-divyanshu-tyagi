@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from 'next-themes'
 import { ClientNavigation } from '@/components/ClientNavigation'
+import { Calculator } from 'lucide-react'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -111,7 +112,9 @@ export default function RootLayout({
             <header className="sticky top-0 z-40 border-b border-white/10 bg-background/30 backdrop-blur">
               <div className="app-container h-14 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-xl bg-primary/20 border border-primary/30" />
+                  <div className="h-8 w-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center">
+                    <Calculator className="h-4 w-4 text-primary" />
+                  </div>
                   <span
                     className="font-semibold tracking-tight"
                     style={{ fontFamily: 'var(--font-display)' }}
