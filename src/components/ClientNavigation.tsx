@@ -31,22 +31,22 @@ export const ClientNavigation = () => {
   if (isAuthenticated && user) {
     // Show authenticated navigation
     return (
-      <nav className="flex items-center gap-2">
-        <Button asChild variant="ghost" size="sm">
+      <nav className="flex items-center gap-1 sm:gap-2">
+        <Button asChild variant="ghost" size="sm" className="px-2 sm:px-3">
           <Link href="/dashboard">
-            <User className="mr-2 h-4 w-4" />
-            Dashboard
+            <User className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Dashboard</span>
           </Link>
         </Button>
-        <Button asChild variant="ghost" size="sm">
+        <Button asChild variant="ghost" size="sm" className="px-2 sm:px-3">
           <Link href="/calories">
-            <Calculator className="mr-2 h-4 w-4" />
-            Calculate
+            <Calculator className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Calculate</span>
           </Link>
         </Button>
-        <Button variant="ghost" size="sm" onClick={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4" />
-          Logout
+        <Button variant="ghost" size="sm" onClick={handleLogout} className="px-2 sm:px-3">
+          <LogOut className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Logout</span>
         </Button>
       </nav>
     )
@@ -54,12 +54,16 @@ export const ClientNavigation = () => {
 
   // Show unauthenticated navigation
   return (
-    <nav className="flex items-center gap-2">
-      <Button asChild variant="ghost">
-        <Link href="/login">Login</Link>
+    <nav className="flex items-center gap-1 sm:gap-2">
+      <Button asChild variant="ghost" size="sm" className="px-2 sm:px-3">
+        <Link href="/login">
+          <span className="text-xs sm:text-sm">Login</span>
+        </Link>
       </Button>
-      <Button asChild>
-        <Link href="/register">Get Started</Link>
+      <Button asChild size="sm" className="px-2 sm:px-3">
+        <Link href="/register">
+          <span className="text-xs sm:text-sm">Sign Up</span>
+        </Link>
       </Button>
     </nav>
   )

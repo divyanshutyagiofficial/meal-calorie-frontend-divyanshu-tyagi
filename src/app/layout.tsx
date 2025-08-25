@@ -110,19 +110,21 @@ export default function RootLayout({
         >
           <div className="min-h-screen bg-[radial-gradient(120%_80%_at_50%_-10%,rgba(56,189,248,0.18),transparent_60%),radial-gradient(100%_60%_at_85%_10%,rgba(99,102,241,0.18),transparent_60%),radial-gradient(90%_70%_at_10%_95%,rgba(251,113,133,0.18),transparent_60%),radial-gradient(85%_55%_at_95%_90%,rgba(251,191,36,0.12),transparent_70%),linear-gradient(to_bottom,#0b1220_0%,#0b1325_40%,#0e1726_100%)]">
             <header className="sticky top-0 z-40 border-b border-white/10 bg-background/30 backdrop-blur">
-              <div className="app-container h-14 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center">
-                    <Calculator className="h-4 w-4 text-primary" />
+              <div className="app-container">
+                <div className="h-12 sm:h-14 flex items-center justify-between px-2 sm:px-0">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                      <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                    </div>
+                    <span
+                      className="font-semibold tracking-tight text-sm sm:text-base truncate"
+                      style={{ fontFamily: 'var(--font-display)' }}
+                    >
+                      CalorieIQ
+                    </span>
                   </div>
-                  <span
-                    className="font-semibold tracking-tight"
-                    style={{ fontFamily: 'var(--font-display)' }}
-                  >
-                    CalorieIQ
-                  </span>
+                  <ClientNavigation />
                 </div>
-                <ClientNavigation />
               </div>
             </header>
             <main className="app-container py-8 md:py-12">{children}</main>

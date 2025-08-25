@@ -99,7 +99,7 @@ export default function CaloriesPage() {
         </script>
       </Head>
 
-      <div className="min-h-screen p-4">
+      <div className="min-h-screen p-0 md:p-4">
         <div className="app-container space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between bg-card/60 backdrop-blur border rounded-xl p-6 shadow-sm">
